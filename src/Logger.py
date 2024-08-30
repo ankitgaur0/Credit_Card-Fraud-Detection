@@ -19,7 +19,3 @@ logging.basicConfig(
     level=logging.INFO,
     format=log_format
 )
-
-
-if __name__=="__main__":
-    logging.info("this is me")
