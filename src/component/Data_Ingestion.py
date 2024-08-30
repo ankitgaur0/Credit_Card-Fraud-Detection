@@ -53,8 +53,4 @@ class Data_Ingestion:
             raise Custom_Exception(e,sys)
 
 
-if __name__=="__main__":
-    obj=Data_Ingestion()
-    train_data_path,test_data_path=obj.data_initiate()
-    print(train_data_path,test_data_path)
 
