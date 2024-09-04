@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 from pathlib import Path
 from dataclasses import dataclass
+import pickle
 #some local module
 
 from src.Logger import logging
@@ -20,11 +21,11 @@ from imblearn.over_sampling import SMOTE
 
 @dataclass
 class Datatrans_config:
-    preprocessor_path =os.path.join("artifacts","preprocessor.pkl")
+    preprocessor_path :str = os.path.join("artifacts","preprocessor.pkl")
 
 class Data_Transformation:
     def __init__(self):
-        self.Datatrans_config_obj=Datatrans_config()
+        self.Datatrans_config_obj = Datatrans_config()
 
     def get_data_transformation(self):
         logging.info("get_data_transformation is start")
@@ -43,6 +44,7 @@ class Data_Transformation:
                 ]
             )
             logging.info("return the preprocessor")
+            
             return preprocessor
         
 
@@ -75,20 +77,21 @@ class Data_Transformation:
             #calling the preprocessor object
             preprocessor=self.get_data_transformation()
 
-            X_train_array=preprocessor.fit_transform(X_train)
-            X_test_array=preprocessor.transform(X_test)
+            X_train[["Time","Amount"]]=preprocessor.fit_transform(X_train[["Time","Amount"]])
+            X_test[["Time","Amount"]]=preprocessor.transform(X_test[["Time","Amount"]])
 
             #now concat the array (X_train_array+y_train, X_test_array+y+test)
-            train_array=np.c_[X_train_array,np.array(y_train)]
-            test_array=np.c_[X_test_array,np.array(y_test)]
+            train_array=np.c_[np.array(X_train),np.array(y_train)]
+            test_array=np.c_[np.array(X_test),np.array(y_test)]
 
-            
-            '''save_obj(
+            #os.makedirs(os.path.dirname(self.Datatrans_config_obj.preprocessor_path))
+            save_obj(
                 self.Datatrans_config_obj.preprocessor_path,
-                obj=preprocessor)'''
+                obj=preprocessor)
             return(
                 train_array,
-                test_array,
+                test_array
+                
                 #print(self.Datatrans_config_obj.preprocessor_path)
             )
         except Exception as e:

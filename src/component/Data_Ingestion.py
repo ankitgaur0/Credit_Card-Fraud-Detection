@@ -22,7 +22,7 @@ class Data_Ingestion:
         try:
             logging.info("Data Ingestion is starting to load data ")
 
-            data=pd.read_csv(Path(os.path.join("D:/credit_card_fraud/notebook/Data","creditcard.csv")))
+            data=pd.read_csv(Path(os.path.join("A:/credit_card_fraud/notebook/Data","creditcard.csv")))
             logging.info("data is stored in the data variable by pandas function")
 
             #now making the directory of artifacts to store the data
@@ -36,11 +36,11 @@ class Data_Ingestion:
 
             os.makedirs(os.path.join(os.path.dirname(self.config_obj.train_data_path)),exist_ok=True)
             #storing the train data inthe train_data.csv artifacts file
-            train_data.to_csv(self.config_obj.train_data_path)
+            train_data.to_csv(self.config_obj.train_data_path,index=False)
             logging.info("train_data is stored completed in artifacts folder  ")
             os.makedirs(os.path.join(os.path.dirname(self.config_obj.test_data_path)),exist_ok=True)
             #storing the test data in the test_data.csv artifacts file
-            test_data.to_csv(self.config_obj.test_data_path)
+            test_data.to_csv(self.config_obj.test_data_path,index=False)
             logging.info("test_data is stored completed in artifacts folder  ")
 
             logging.info("return the train and test artifacts path")
